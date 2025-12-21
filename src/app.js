@@ -46,6 +46,11 @@ app.use(express.urlencoded({ extended: true }));
 // app.use("/uploads", express.static("uploads"));
 app.use("/uploads", express.static(path.resolve("uploads")));
 
+// ✅ health check
+app.get("/api/status", (req, res) => {
+  res.json({ status: "ok" });
+});
+
 app.use("/api/ai", aiRoutes);
 app.use("/api/instagram", instagramRoutes);
 app.use("/api/schedule", scheduleRoutes);
