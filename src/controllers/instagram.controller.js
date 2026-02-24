@@ -736,3 +736,37 @@ export const getBestTimeToPost = async (_, res) => {
 
   res.json({ bestTime: best.toISOString(), source: "fallback" });
 };
+
+import axios from "axios";
+
+export const getInstagramProfile = async (req, res) => {
+  try {
+    const accessToken = process.env.INSTAGRAM_TOKEN;
+    const accountId = process.env.INSTAGRAM_ACCOUNT_ID;
+
+    if (!accessToken || !accountId) {
+      return res.status(400).json({
+        error: "Instagram credentials missing in env",
+      });
+    }
+
+    const url = `https://graph.facebook.com/v19.0/${accountId}?fields=username,profile_picture_url&access_token=${accessToken}`;
+
+    const response = await axios.get(url);
+
+    res.json({
+      username: response.data.username,
+      profile_picture_url: response.data.profile_picture_url,
+    });
+  } catch (error) {
+    console.error(
+      "Instagram profile fetch error:",
+      error.response?.data || error.message
+    );
+
+    res.status(500).json({
+      error: "Failed to fetch Instagram profile",
+      details: error.response?.data || error.message,
+    });
+  }
+};

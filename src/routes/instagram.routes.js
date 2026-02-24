@@ -79,7 +79,8 @@ import {
   publishNow,
   getPosts,
   publishScheduledPosts,
-  getBestTimeToPost
+  getBestTimeToPost,
+  getInstagramProfile
 } from "../controllers/instagram.controller.js";
 import { upload } from "../middlewares/upload.js";
 
@@ -87,7 +88,7 @@ const router = express.Router();
 
 router.get("/posts", getPosts);
 router.get("/best-time", getBestTimeToPost);
-
+router.get("/profile", getInstagramProfile);
 // Save / schedule post
 router.post("/save", upload.single("image"), savePost);
 
